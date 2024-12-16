@@ -1,0 +1,9 @@
+Rapport pour products1.csv
+Nombre de produits : 3
+Quantité totale : 450
+Valeur totale : 210.00€
+
+Détail des produits :
+- Apple (Catégorie : Fruit, Prix : 0.5€, Quantité : 100)
+- Banana (Catégorie : Fruit, Prix : 0.2€, Quantité : 200)
+- Tomato (Catégorie : Vegetable, Prix : 0.8€, Quantité : 150)

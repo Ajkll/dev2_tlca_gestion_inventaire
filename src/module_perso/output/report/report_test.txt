@@ -1,0 +1,8 @@
+Rapport pour /tmp/pytest-of-koko/pytest-24/test_generate_report0/input/report_file.csv
+Nombre de produits : 2
+Quantité totale : 8
+Valeur totale : 110.00€
+
+Détail des produits :
+- Product A (Catégorie : Category 1, Prix : 10.0€, Quantité : 5)
+- Product B (Catégorie : Category 2, Prix : 20.0€, Quantité : 3)
