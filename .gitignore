@@ -1,0 +1,16 @@
+# Caches Python
+__pycache__/
+*.py[cod]
+
+# Environnement virtuel
+venv/
+
+# Pytest
+.pytest_cache/
+
+# Rapport de couverture
+.coverage
+htmlcov/
+
+# Fichiers de log
+*.log
