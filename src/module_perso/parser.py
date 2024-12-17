@@ -1,5 +1,4 @@
 import argparse
-import os
 from module_perso.csv_manager import CSVManager
 
 
@@ -9,8 +8,8 @@ def secluded_parser():
     parser = argparse.ArgumentParser(
         description="Un outil pour consolider, rechercher et générer des rapports à partir de fichiers CSV.",
         epilog=f"Répertoires par défaut :\n"
-               f"  - Entrée : {CSVManager.INPUT_DIR}\n"
-               f"  - Sortie : {CSVManager.OUTPUT_DIR}",
+        f"  - Entrée : {CSVManager.INPUT_DIR}\n"
+        f"  - Sortie : {CSVManager.OUTPUT_DIR}",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 

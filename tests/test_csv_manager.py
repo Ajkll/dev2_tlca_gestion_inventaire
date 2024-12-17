@@ -3,6 +3,7 @@ import pytest
 import csv
 from module_perso.csv_manager import CSVManager, FileNotFoundError, DataProcessingError
 
+
 @pytest.fixture
 def setup_directories(tmp_path):
     """Crée des répertoires temporaires pour 'input' et 'output'."""
@@ -11,6 +12,7 @@ def setup_directories(tmp_path):
     input_dir.mkdir()
     output_dir.mkdir()
     return input_dir, output_dir
+
 
 @pytest.fixture
 def sample_csv_file(setup_directories):
@@ -26,11 +28,13 @@ def sample_csv_file(setup_directories):
         ])
     return file_path
 
+
 def test_file_not_found_error(setup_directories):
     """Teste si une exception est levée lorsque le fichier est introuvable."""
     _, output_dir = setup_directories
     with pytest.raises(FileNotFoundError):
         CSVManager("nonexistent.csv", is_output=False)
+
 
 def test_read_csv(sample_csv_file):
     """Teste la lecture d'un fichier CSV."""
@@ -40,6 +44,7 @@ def test_read_csv(sample_csv_file):
     assert data[0]["name"] == "Product A"
     assert data[1]["price"] == "20.0"
 
+
 def test_read_csv_invalid_file(setup_directories):
     """Teste la levée d'une exception pour un fichier corrompu."""
     input_dir, _ = setup_directories
@@ -48,6 +53,7 @@ def test_read_csv_invalid_file(setup_directories):
     with pytest.raises(DataProcessingError):
         manager = CSVManager(str(invalid_file))
         manager.read_csv()
+
 
 def test_write_csv(setup_directories):
     """Teste l'écriture dans un fichier CSV."""
@@ -72,6 +78,7 @@ def test_write_csv(setup_directories):
         written_data = list(reader)
         assert written_data == data, "Les données écrites dans le fichier ne correspondent pas aux données attendues."
 
+
 def test_write_csv_invalid_data(setup_directories):
     """Teste la levée d'une exception pour des données malformées."""
     _, output_dir = setup_directories
@@ -95,4 +102,3 @@ def test_csvmanager_output_dir():
 
     # Vérifier que le chemin est correct
     assert manager.file_path == expected_path, f"Le chemin attendu est {expected_path}, mais obtenu {manager.file_path}"
-

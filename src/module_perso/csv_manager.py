@@ -6,13 +6,16 @@ class CSVError(Exception):
     """Exception de base pour les erreurs liées aux opérations CSV."""
     pass
 
+
 class FileNotFoundError(CSVError):
     """Exception levée lorsqu'un fichier est introuvable."""
     pass
 
+
 class DataProcessingError(CSVError):
     """Exception levée lorsqu'une erreur survient lors du traitement des données."""
     pass
+
 
 class CSVManager:
     """Classe utilitaire pour gérer les opérations sur les fichiers CSV."""
@@ -42,7 +45,8 @@ class CSVManager:
                     break
 
         if not self.file_path:
-            raise FileNotFoundError(f"Le fichier '{file_name}' est introuvable dans les répertoires 'input' ou 'output'.")
+            raise FileNotFoundError(
+                f"Le fichier '{file_name}' est introuvable dans les répertoires 'input' ou 'output'.")
 
     def read_csv(self):
         """Lit un fichier CSV et retourne une liste de dictionnaires."""
@@ -57,7 +61,6 @@ class CSVManager:
             raise DataProcessingError(f"Erreur lors de la lecture du fichier CSV : {e}")
         except Exception as e:
             raise DataProcessingError(f"Erreur inconnue : {e}")
-
 
     @staticmethod
     def write_csv(file_name, data, fieldnames, output_dir=None):
@@ -162,4 +165,3 @@ class Commerce:
             print(f"Rapport généré avec succès dans : {report_path}")
         except Exception as e:
             raise DataProcessingError(f"Erreur lors de la génération du rapport : {e}")
-

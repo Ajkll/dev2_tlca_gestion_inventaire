@@ -1,7 +1,8 @@
 import pytest
 import os
 import csv
-from module_perso.csv_manager import Commerce, CSVManager, DataProcessingError
+from module_perso.csv_manager import Commerce, CSVManager
+
 
 @pytest.fixture
 def setup_directories(tmp_path):
@@ -12,24 +13,26 @@ def setup_directories(tmp_path):
     output_dir.mkdir()
     return input_dir, output_dir
 
+
 @pytest.fixture
 def sample_csv_files(setup_directories):
     """Crée plusieurs fichiers CSV d'exemple pour les tests."""
     input_dir, _ = setup_directories
     file_paths = []
-    
+
     # Créer deux fichiers CSV d'exemple
     for i in range(2):
-        file_path = input_dir / f"file{i+1}.csv"
+        file_path = input_dir / f"file{i + 1}.csv"
         with open(file_path, "w", encoding="utf-8", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=["name", "category", "price", "quantity"])
             writer.writeheader()
             writer.writerows([
-                {"name": f"Product {i+1}A", "category": "Category 1", "price": "10.0", "quantity": "5"},
-                {"name": f"Product {i+1}B", "category": "Category 2", "price": "20.0", "quantity": "3"}
+                {"name": f"Product {i + 1}A", "category": "Category 1", "price": "10.0", "quantity": "5"},
+                {"name": f"Product {i + 1}B", "category": "Category 2", "price": "20.0", "quantity": "3"}
             ])
         file_paths.append(file_path)
     return file_paths
+
 
 @pytest.fixture
 def sample_report_csv(setup_directories):
@@ -44,6 +47,7 @@ def sample_report_csv(setup_directories):
             {"name": "Product B", "category": "Category 2", "price": "20.0", "quantity": "3"}
         ])
     return file_path
+
 
 def test_consolidate_files(setup_directories, sample_csv_files):
     """Teste la consolidation de plusieurs fichiers CSV."""
@@ -64,10 +68,11 @@ def test_consolidate_files(setup_directories, sample_csv_files):
         assert rows[0]['name'] == "Product 1A"
         assert rows[3]['name'] == "Product 2B"
 
+
 def test_search_data(setup_directories, sample_report_csv, capsys):
     """Teste la recherche dans un fichier CSV."""
     commerce = Commerce()
-    
+
     # Cas : recherche sans filtre
     commerce.search_data(str(sample_report_csv), query="Product A")
     captured = capsys.readouterr()
@@ -82,6 +87,7 @@ def test_search_data(setup_directories, sample_report_csv, capsys):
     commerce.search_data(str(sample_report_csv), query="Product", price_range="15,25")
     captured = capsys.readouterr()
     assert "Product B" in captured.out, "Le filtre par prix n'a pas fonctionné."
+
 
 def test_generate_report(setup_directories, sample_report_csv):
     """Teste la génération d'un rapport."""
@@ -128,5 +134,3 @@ def test_search_data_no_results(setup_directories, capsys):
     # Capturer la sortie standard
     captured = capsys.readouterr()
     assert "Aucun résultat trouvé." in captured.out
-
-

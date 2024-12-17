@@ -1,6 +1,7 @@
 from module_perso.parser import secluded_parser
-from module_perso.csv_manager import CSVManager, Commerce ,CSVError, FileNotFoundError,DataProcessingError
+from module_perso.csv_manager import Commerce , CSVError
 import sys
+
 
 def main():
     """Point d'entrée principal du script."""
@@ -26,6 +27,7 @@ def main():
     except Exception as e:
         print(f"Erreur imprévue : {e}", file=sys.stderr)
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
