@@ -121,7 +121,8 @@ class Commerce:
         CSVManager.write_csv(output_file, consolidated_data, fieldnames)
         print(f"Les fichiers {file_paths} ont été consolidés dans {output_file}.")
 
-    def search_data(self, file_path, query, category=None, price_range=None):
+    def search_data(self,
+                    file_path, query, category=None, price_range=None):
         """Recherche les données dans un fichier CSV."""
         manager = CSVManager(file_path)
         data = manager.read_csv()

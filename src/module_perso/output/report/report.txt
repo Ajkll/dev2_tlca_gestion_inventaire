@@ -1,0 +1,4 @@
+Rapport pour products1.csv
+Nombre de produits : 3
+Quantité totale : 450
+Valeur totale : 210.00€
