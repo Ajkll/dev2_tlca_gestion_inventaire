@@ -1,4 +1,4 @@
-Rapport pour /tmp/pytest-of-koko/pytest-26/test_generate_report0/input/report_file.csv
+Rapport pour /tmp/pytest-of-koko/pytest-28/test_generate_report0/input/report_file.csv
 Nombre de produits : 2
 Quantité totale : 8
 Valeur totale : 110.00€

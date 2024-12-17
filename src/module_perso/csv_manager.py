@@ -1,21 +1,17 @@
 import csv
 import os
 
-
 class CSVError(Exception):
     """Exception de base pour les erreurs liées aux opérations CSV."""
     pass
 
-
-class FileNotFoundError(CSVError):
+class CSV_FileNotFoundError(CSVError):
     """Exception levée lorsqu'un fichier est introuvable."""
     pass
-
 
 class DataProcessingError(CSVError):
     """Exception levée lorsqu'une erreur survient lors du traitement des données."""
     pass
-
 
 class CSVManager:
     """Classe utilitaire pour gérer les opérations sur les fichiers CSV."""
@@ -29,10 +25,10 @@ class CSVManager:
         - Priorise `output` pour les fichiers consolidés ou générés.
         - Recherche aussi dans `input` si le fichier est introuvable dans `output`.
         """
-        self.file_path = None
+        self._file_path = None
 
         if is_output:
-            self.file_path = os.path.join(self.OUTPUT_DIR, file_name)
+            self._file_path = os.path.join(self.OUTPUT_DIR, file_name)
         else:
             # Priorité à output pour la recherche
             potential_paths = [
@@ -41,17 +37,21 @@ class CSVManager:
             ]
             for path in potential_paths:
                 if os.path.exists(path):
-                    self.file_path = path
+                    self._file_path = path
                     break
 
-        if not self.file_path:
-            raise FileNotFoundError(
+        if not self._file_path:
+            raise CSV_FileNotFoundError(
                 f"Le fichier '{file_name}' est introuvable dans les répertoires 'input' ou 'output'.")
+
+    @property
+    def file_path(self):
+        return self._file_path
 
     def read_csv(self):
         """Lit un fichier CSV et retourne une liste de dictionnaires."""
         try:
-            with open(self.file_path, mode='r', encoding='utf-8') as file:
+            with open(self._file_path, mode='r', encoding='utf-8') as file:
                 reader = csv.DictReader(file)
                 data = [row for row in reader]
                 if not data:  # Vérifie si le fichier est vide ou mal formé
@@ -84,12 +84,21 @@ class CSVManager:
         except Exception as e:
             raise DataProcessingError(f"Erreur inconnue : {e}")
 
-
 class Commerce:
     """Classe principale pour gérer les opérations commerciales."""
 
     def __init__(self):
-        self.data = []
+        self._data = []
+
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, value):
+        if not isinstance(value, list):
+            raise ValueError("Les données doivent être une liste.")
+        self._data = value
 
     def consolidate_files(self, file_paths, output_file):
         """Consolide plusieurs fichiers CSV en un seul fichier."""

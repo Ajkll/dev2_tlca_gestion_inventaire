@@ -2,6 +2,6 @@ name,category,price,quantity
 Apple,Fruit,0.5,100
 Banana,Fruit,0.2,200
 Tomato,Vegetable,0.8,150
-Milk,Dairy,1.2,50
-Cheese,Dairy,2.5,30
-Butter,Dairy,1.8,40
+Carrot,Vegetable,0.4,300
+Potato,Vegetable,0.3,400
+Orange,Fruit,0.6,180

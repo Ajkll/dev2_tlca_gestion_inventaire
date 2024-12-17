@@ -1,7 +1,7 @@
 import os
 import pytest
 import csv
-from module_perso.csv_manager import CSVManager, FileNotFoundError, DataProcessingError
+from module_perso.csv_manager import CSVManager, CSV_FileNotFoundError, DataProcessingError
 
 
 @pytest.fixture
@@ -32,7 +32,7 @@ def sample_csv_file(setup_directories):
 def test_file_not_found_error(setup_directories):
     """Teste si une exception est levée lorsque le fichier est introuvable."""
     _, output_dir = setup_directories
-    with pytest.raises(FileNotFoundError):
+    with pytest.raises(CSV_FileNotFoundError):
         CSVManager("nonexistent.csv", is_output=False)
 
 
