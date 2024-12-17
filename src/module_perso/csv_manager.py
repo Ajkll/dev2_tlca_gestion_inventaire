@@ -1,17 +1,21 @@
 import csv
 import os
 
+
 class CSVError(Exception):
     """Exception de base pour les erreurs liées aux opérations CSV."""
     pass
+
 
 class CSV_FileNotFoundError(CSVError):
     """Exception levée lorsqu'un fichier est introuvable."""
     pass
 
+
 class DataProcessingError(CSVError):
     """Exception levée lorsqu'une erreur survient lors du traitement des données."""
     pass
+
 
 class CSVManager:
     """Classe utilitaire pour gérer les opérations sur les fichiers CSV."""
@@ -83,6 +87,7 @@ class CSVManager:
             raise DataProcessingError(f"Erreur lors de l'écriture du fichier CSV : {e}")
         except Exception as e:
             raise DataProcessingError(f"Erreur inconnue : {e}")
+
 
 class Commerce:
     """Classe principale pour gérer les opérations commerciales."""
