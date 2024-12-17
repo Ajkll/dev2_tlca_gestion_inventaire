@@ -65,6 +65,45 @@ Ce projet m'a permis de développer des compétences en manipulation de fichiers
 
 Le projet a été réalisé avec l'aide de ChatGPT (comme autorisé dans les consignes), tout en assurant une supervision personnelle pour le rendu final.
 
+## tree (simplifier) du project
+
+(venv) koko@koko:~/dev2_tlca$ tree -a -I ".pytest_cache|venv|.git"
+.
+├── .coverage
+├── env.sh
+├── .flake8
+├── .github
+│ └── workflows
+│ └── test.yml
+├── .gitignore
+├── pytest.ini
+├── README.md
+├── requirements.txt
+├── src
+│ ├── .coverage
+│ ├── main.py
+│ └─── module_perso
+│ ├── csv_manager.py
+│ ├── **init**.py
+│ ├── input
+│ │ ├── products1.csv
+│ │ ├── products2.csv
+│ │ └── products3.csv
+│ ├── output
+│ │ ├── report
+│ │ │ ├── rapport_test.txt
+│ │ │ └── report_test.txt
+│ │ └── resultat.csv
+│ └─── parser.py
+└── tests
+├── test_csv_manager.py
+├── test_cvs_manager_commerce.py
+├── test_main.py
+└── test_parser.py
+
+13 directories, 44 files
+(venv) koko@koko:~/dev2_tlca$
+
 ## Remerciements
 
 Merci d'avoir consulté ce projet !
@@ -73,4 +112,4 @@ Le code source est disponible sur GitHub : [Lien du Projet](https://github.com/A
 
 ---
 
-**Auteur :** Ajkll
+**Auteur :** Ajkll et chatgpt
