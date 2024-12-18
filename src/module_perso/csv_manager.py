@@ -144,11 +144,8 @@ class Commerce:
                 if min_price <= float(row['price']) <= max_price
             ]
 
-        if not results:
-            print("Aucun résultat trouvé.")
-        else:
-            for result in results:
-                print(result)
+        for result in results:
+            print(result)
 
     def generate_report(self, file_path, output_file, summary=False):
         """Génère un rapport récapitulatif dans le répertoire 'report'."""

@@ -30,7 +30,6 @@ def execute_command(command, commerce):
             category = args[category_index] if category_index else None
             price_range = args[price_range_index] if price_range_index else None
             results = commerce.search_data(file, query, category, price_range)
-            return "\n".join(results) if results else "Aucun résultat trouvé."
 
         elif command.startswith("report"):
             # Extraction des arguments pour la commande 'report'
