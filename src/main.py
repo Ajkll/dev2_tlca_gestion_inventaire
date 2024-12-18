@@ -1,7 +1,7 @@
-import argparse
 import sys
-from module_perso.csv_manager import CSVManager, Commerce, CSVError
+from module_perso.csv_manager import Commerce, CSVError
 from module_perso.parser import secluded_parser
+
 
 def execute_command(command, commerce):
     """Exécute une commande en fonction de l'entrée de l'utilisateur."""
@@ -30,6 +30,7 @@ def execute_command(command, commerce):
             category = args[category_index] if category_index else None
             price_range = args[price_range_index] if price_range_index else None
             results = commerce.search_data(file, query, category, price_range)
+            return results
 
         elif command.startswith("report"):
             # Extraction des arguments pour la commande 'report'
@@ -53,6 +54,7 @@ def execute_command(command, commerce):
     except Exception as e:
         return f"Erreur imprévue : {e}"
 
+
 def interactive_shell():
     """Shell interactif qui permet à l'utilisateur de saisir des commandes en continu."""
     print("Bienvenue dans le shell interactif. Tapez 'exit' pour quitter ou 'help' pour obtenir de l'aide.")
@@ -68,7 +70,8 @@ def interactive_shell():
             elif command.lower() == "help":
                 print("Commandes disponibles :")
                 print("  consolidate --files <fichiers> --output <sortie>  : Consolider des fichiers CSV")
-                print("  search --file <fichier> --query <requête> [--category <catégorie>] [--price-range <plage>] : Rechercher dans un CSV")
+                print(
+                    "  search --file <fichier> --query <requête> [--category <catégorie>] [--price-range <plage>] : Rechercher dans un CSV")
                 print("  report --file <fichier> --output <rapport> [--summary] : Générer un rapport")
                 print("  exit : Quitter le shell")
             else:
@@ -80,6 +83,7 @@ def interactive_shell():
             break
         except Exception as e:
             print(f"Erreur dans le shell : {e}")
+
 
 def main():
     """Point d'entrée principal du script."""
