@@ -4,6 +4,7 @@ import sys
 from module_perso.logging_config import configure_logging
 import logging
 
+
 def main():
     """Point d'entrée principal du script."""
     configure_logging()

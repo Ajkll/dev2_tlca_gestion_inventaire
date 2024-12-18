@@ -110,5 +110,3 @@ def test_generate_report(setup_directories, sample_report_csv):
         assert "Valeur totale : 110.00€" in content, "La valeur totale est incorrecte."
         assert "Product A" in content, "Les détails des produits sont manquants."
         assert "Product B" in content, "Les détails des produits sont manquants."
-
-
