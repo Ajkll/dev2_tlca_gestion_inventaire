@@ -52,6 +52,12 @@ class CSVManager:
     def file_path(self):
         return self._file_path
 
+    @file_path.setter
+    def file_path(self, new_path):
+        if not os.path.exists(new_path):
+            raise CSV_FileNotFoundError(f"nouveau chemin {new_path} introuvable.")
+        self._file_path = new_path
+
     def read_csv(self):
         """Lit un fichier CSV et retourne une liste de dictionnaires."""
         try:
