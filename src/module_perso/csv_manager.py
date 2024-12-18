@@ -1,5 +1,9 @@
 import csv
 import os
+import logging
+
+# Initialisation du logger
+logger = logging.getLogger(__name__)
 
 
 class CSVError(Exception):
@@ -45,8 +49,11 @@ class CSVManager:
                     break
 
         if not self._file_path:
+            logger.error(f"Fichier introuvable : {file_name}")
             raise CSV_FileNotFoundError(
-                f"Le fichier '{file_name}' est introuvable dans les répertoires 'input' ou 'output'.")
+                f"Le fichier '{file_name}' est introuvable dans les répertoires 'input' ou 'output'."
+            )
+        logger.info(f"Fichier CSV initialisé : {self._file_path}")
 
     @property
     def file_path(self):
@@ -55,21 +62,28 @@ class CSVManager:
     @file_path.setter
     def file_path(self, new_path):
         if not os.path.exists(new_path):
+            logger.error(f"Chemin de fichier introuvable : {new_path}")
             raise CSV_FileNotFoundError(f"nouveau chemin {new_path} introuvable.")
         self._file_path = new_path
+        logger.info(f"Chemin de fichier mis à jour : {self._file_path}")
 
     def read_csv(self):
         """Lit un fichier CSV et retourne une liste de dictionnaires."""
         try:
+            logger.debug(f"Lecture du fichier CSV : {self._file_path}")
             with open(self._file_path, mode='r', encoding='utf-8') as file:
                 reader = csv.DictReader(file)
                 data = [row for row in reader]
                 if not data:  # Vérifie si le fichier est vide ou mal formé
+                    logger.warning(f"Le fichier CSV est vide ou invalide : {self._file_path}")
                     raise csv.Error("Le fichier CSV est vide ou invalide.")
+                logger.info(f"Fichier CSV lu avec succès : {self._file_path}")
                 return data
         except (csv.Error, KeyError) as e:
+            logger.error(f"Erreur lors de la lecture du fichier CSV : {e}")
             raise DataProcessingError(f"Erreur lors de la lecture du fichier CSV : {e}")
         except Exception as e:
+            logger.critical(f"Erreur inconnue lors de la lecture du fichier CSV : {e}")
             raise DataProcessingError(f"Erreur inconnue : {e}")
 
     @staticmethod
@@ -79,19 +93,24 @@ class CSVManager:
         os.makedirs(output_dir, exist_ok=True)  # Crée le répertoire s'il n'existe pas
         output_path = os.path.join(output_dir, file_name)
         try:
+            logger.debug(f"Écriture dans le fichier CSV : {output_path}")
             # Vérifie si les colonnes sont valides
             for row in data:
                 missing_columns = [col for col in fieldnames if col not in row]
                 if missing_columns:
+                    logger.error(f"Colonnes manquantes : {missing_columns}")
                     raise ValueError(f"Colonnes manquantes : {missing_columns}")
 
             with open(output_path, mode='w', encoding='utf-8', newline='') as file:
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
                 writer.writeheader()
                 writer.writerows(data)
+                logger.info(f"Fichier CSV écrit avec succès : {output_path}")
         except (ValueError, KeyError) as e:
+            logger.error(f"Erreur lors de l'écriture du fichier CSV : {e}")
             raise DataProcessingError(f"Erreur lors de l'écriture du fichier CSV : {e}")
         except Exception as e:
+            logger.critical(f"Erreur inconnue lors de l'écriture du fichier CSV : {e}")
             raise DataProcessingError(f"Erreur inconnue : {e}")
 
 
@@ -100,6 +119,7 @@ class Commerce:
 
     def __init__(self):
         self._data = []
+        logger.info("Classe Commerce initialisée")
 
     @property
     def data(self):
@@ -108,11 +128,14 @@ class Commerce:
     @data.setter
     def data(self, value):
         if not isinstance(value, list):
+            logger.error("Les données doivent être une liste.")
             raise ValueError("Les données doivent être une liste.")
         self._data = value
+        logger.debug("Données mises à jour.")
 
     def consolidate_files(self, file_paths, output_file):
         """Consolide plusieurs fichiers CSV en un seul fichier."""
+        logger.info("Consolidation des fichiers CSV")
         consolidated_data = []
         for file_path in file_paths:
             manager = CSVManager(file_path)
@@ -120,16 +143,17 @@ class Commerce:
             consolidated_data.extend(file_data)
 
         if not consolidated_data:
+            logger.warning("Aucune donnée n'a été consolidée.")
             raise DataProcessingError("Aucune donnée n'a été consolidée.")
 
         # Écrire le fichier consolidé
         fieldnames = consolidated_data[0].keys() if consolidated_data else []
         CSVManager.write_csv(output_file, consolidated_data, fieldnames)
-        print(f"Les fichiers {file_paths} ont été consolidés dans {output_file}.")
+        logger.info(f"Fichiers consolidés avec succès : {file_paths} -> {output_file}")
 
-    def search_data(self,
-                    file_path, query, category=None, price_range=None):
+    def search_data(self, file_path, query, category=None, price_range=None):
         """Recherche les données dans un fichier CSV."""
+        logger.info(f"Recherche des données : {query}")
         manager = CSVManager(file_path)
         data = manager.read_csv()
 
@@ -145,15 +169,15 @@ class Commerce:
             ]
 
         for result in results:
+            logger.debug(f"Résultat trouvé : {result}")
             print(result)
 
     def generate_report(self, file_path, output_file, summary=False):
         """Génère un rapport récapitulatif dans le répertoire 'report'."""
-        # Vérifier ou créer le répertoire 'report'
+        logger.info("Génération du rapport")
         report_dir = os.path.join(CSVManager.OUTPUT_DIR, "report")
         os.makedirs(report_dir, exist_ok=True)
 
-        # Chemin complet pour le fichier de rapport
         report_path = os.path.join(report_dir, output_file)
 
         # Lire les données depuis le fichier CSV
@@ -165,7 +189,7 @@ class Commerce:
         total_quantity = sum(int(row['quantity']) for row in data)
         total_value = sum(float(row['price']) * int(row['quantity']) for row in data)
 
-        # Écrire les données dans le fichier de rapport
+        # Écrire le rapport
         try:
             with open(report_path, 'w', encoding='utf-8') as file:
                 file.write(f"Rapport pour {file_path}\n")
@@ -180,6 +204,7 @@ class Commerce:
                             f"Quantité : {row['quantity']})\n"
                         )
 
-            print(f"Rapport généré avec succès dans : {report_path}")
+            logger.info(f"Rapport généré avec succès dans : {report_path}")
         except Exception as e:
+            logger.error(f"Erreur lors de la génération du rapport : {e}")
             raise DataProcessingError(f"Erreur lors de la génération du rapport : {e}")
